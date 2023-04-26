@@ -17,7 +17,7 @@ class HomeProvider with ChangeNotifier {
       _items = await _apiService.getItems();
       notifyListeners();
     } catch (error) {
-      throw Exception('Ögeler Firebase Realtime Databaseden getirilemedi');
+      throw Exception('Ögeler Firebase Veritabanından getirilemedi');
     }
   }
 
@@ -27,7 +27,31 @@ class HomeProvider with ChangeNotifier {
       _items.add(item);
       notifyListeners();
     } catch (error) {
-      throw Exception('Firebase Gerçek Zamanli Veritabanina öğe eklenemedi');
+      throw Exception('Firebase Veritabanina öğe eklenemedi');
+    }
+  }
+
+  Future<void> removeItem(Item item) async {
+    try {
+      await _apiService.removeItem(_items, item.id);
+      _items.removeWhere((element) => element.id == item.id);
+      notifyListeners();
+    } catch (error) {
+      throw Exception('Firebase Veritabanindan Veri Silinemedi');
+    }
+  }
+
+  Future<void> updateItem(
+      String itemId, String itemName, String itemPhone) async {
+    try {
+      await _apiService.updatePerson(itemId, itemName, itemPhone);
+      final itemIndex = _items.indexWhere((element) => element.id == itemId);
+      if (itemIndex != -1) {
+        _items[itemIndex] = Item(id: itemId, name: itemName, phone: itemPhone);
+        notifyListeners();
+      }
+    } catch (e) {
+      print('Error updating item: $e');
     }
   }
 }

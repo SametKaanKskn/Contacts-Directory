@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//HomePage appBarda bu butonun eklenmesini sağladım çünkü direkt appBar da yapınca hata veriyor
 class SignOutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -1,19 +1,30 @@
-// pages/home_page.dart
-
-import 'package:bitirme/core/model/item_model.dart';
 import 'package:bitirme/core/widgets/sign_out.dart';
-import 'package:bitirme/providers/home_provider.dart';
+import 'package:bitirme/view/person_details_page.dart';
+import 'package:bitirme/view/person_add_page.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:bitirme/core/model/item_model.dart';
+import 'package:bitirme/providers/home_provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<HomeProvider>(context, listen: false).fetchItems();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Rehber Listesi'),
-        backgroundColor: Colors.amber,
-        actionsIconTheme: IconThemeData(),
+        title: const Text('Kişiler'),
+        backgroundColor: Colors.deepPurple,
         actions: [
           SignOutButton(),
         ],
@@ -23,85 +34,147 @@ class HomePage extends StatelessWidget {
           if (homeProvider.items.isEmpty) {
             return Center(child: CircularProgressIndicator());
           } else {
-            return ListView.builder(
-              itemCount: homeProvider.items.length,
-              itemBuilder: (context, index) {
-                Item item = homeProvider.items[index];
-                return ListTile(
-                  title: Text(item.name),
-                  subtitle: Text(item.description),
-                );
-              },
+            return Scrollbar(
+              isAlwaysShown: true,
+              thickness: 8.0,
+              controller: ScrollController(),
+              hoverThickness: 12.0,
+              radius: Radius.circular(8.0),
+              child: ListView.builder(
+                itemCount: homeProvider.items.length,
+                itemBuilder: (context, index) {
+                  Item item = homeProvider.items[index];
+                  return Dismissible(
+                    key: Key(item.id),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (direction) {
+                      homeProvider.removeItem(item);
+                    },
+                    background: Container(
+                      color: Colors.red,
+                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.only(right: 20),
+                      child: Icon(Icons.delete, color: Colors.white),
+                    ),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      margin: EdgeInsets.all(8),
+                      elevation: 4,
+                      child: ListTile(
+                        leading: Lottie.asset('assets/user_card.json',
+                            width: 30, height: 30),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PersonDetail(person: item),
+                            ),
+                          );
+                        },
+                        title: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Kişi Adı: ',
+                                style: TextStyle(
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ),
+                              TextSpan(
+                                text: '${item.name}',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        ),
+                        subtitle: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Telefon: ',
+                                style: TextStyle(
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ),
+                              TextSpan(
+                                text: '${item.phone}',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        ),
+                        trailing: IconButton(
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      '${item.name} silinsin mi?',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 16),
+                                    ),
+                                    Row(
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {
+                                            homeProvider.removeItem(item);
+                                            ScaffoldMessenger.of(context)
+                                                .hideCurrentSnackBar();
+                                          },
+                                          child: Text('EVET',
+                                              style:
+                                                  TextStyle(color: Colors.red)),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            ScaffoldMessenger.of(context)
+                                                .hideCurrentSnackBar();
+                                          },
+                                          child: Text('HAYIR',
+                                              style: TextStyle(
+                                                  color: Colors.green)),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                duration: Duration(seconds: 5),
+                              ),
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.delete_outline,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             );
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddItemDialog(context),
-        tooltip: 'Kişi Ekle',
-        child: Icon(Icons.add),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => PersonAdd()),
+        ),
+        backgroundColor: Colors.deepPurple,
+        icon: Lottie.asset('assets/person_add_animation.json',
+            width: 40, height: 40),
+        label: Text('Kişi Ekle'),
       ),
-    );
-  }
-
-  void _showAddItemDialog(BuildContext context) {
-    GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    String itemName = '';
-    String itemDescription = '';
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Kişi Ekle'),
-          content: Form(
-            key: formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'Kişi Adı'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Lütfen Kişi Adı Giriniz';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) => itemName = value!,
-                ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'Telefon Numarası'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Lütfen Telefon Numarası giriniz';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) => itemDescription = value!,
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('Kapat'),
-            ),
-            TextButton(
-              onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  formKey.currentState!.save();
-                  Provider.of<HomeProvider>(context, listen: false).addItem(
-                    Item(id: '', name: itemName, description: itemDescription),
-                  );
-                  Navigator.of(context).pop();
-                }
-              },
-              child: Text('Ekle'),
-            ),
-          ],
-        );
-      },
     );
   }
 }

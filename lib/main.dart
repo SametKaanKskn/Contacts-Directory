@@ -5,7 +5,9 @@ import 'package:bitirme/core/widgets/auth_widget.dart';
 import 'package:bitirme/core/widgets/auth_widget_builder.dart';
 import 'package:bitirme/firebase_options.dart';
 import 'package:bitirme/providers/home_provider.dart';
+import 'package:bitirme/splash/update_splash.dart';
 import 'package:bitirme/view/home_page.dart';
+import 'package:bitirme/view/person_details_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,6 +44,10 @@ class MyApp extends StatelessWidget {
           home: AuthWidget(
             snapshot: snapShot,
           ),
+          routes: {
+            '/home': (context) => HomePage(),
+            '/updateSplash': (context) => UpdateSplash(),
+          },
         ),
       ),
     );

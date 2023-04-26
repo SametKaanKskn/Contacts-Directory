@@ -27,6 +27,3 @@ class AuthWidget extends StatelessWidget {
     return ErrorPage();
   }
 }
-
-
-// pages/home_page.dart
