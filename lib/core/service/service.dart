@@ -1,11 +1,9 @@
 import 'package:bitirme/core/model/user_model.dart';
 import 'package:bitirme/core/service/i_auth_service.dart';
-import 'package:bitirme/core/service/mixin_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bitirme/core/model/user_model.dart';
 import 'package:bitirme/core/service/i_auth_service.dart';
-import 'package:bitirme/core/service/mixin_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
