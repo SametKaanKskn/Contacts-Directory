@@ -1,19 +1,21 @@
 import 'package:bitirme/core/model/user_model.dart';
 import 'package:bitirme/core/service/i_auth_service.dart';
+import 'package:bitirme/providers/home_provider.dart';
 import 'package:bitirme/view/home_page.dart';
+import 'package:bitirme/view/login_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -37,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
         elevation: 0,
         backgroundColor: myPrimaryColor,
         title: const Text(
-          "Kayıt ve Giriş Ekranı",
+          "Kayıt Ekranı",
           style: TextStyle(
               color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),
         ),
@@ -201,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
                                 password: _passwordController.text);
                             _submitForm();
                           },
-                          child: const Text("Kayıt Ol Ve Giriş Yap"),
+                          child: const Text("Kayıt Ol"),
                           style: ElevatedButton.styleFrom(
                               primary: myPrimaryColor,
                               minimumSize: const Size(double.infinity, 50)),
@@ -221,23 +223,24 @@ class _LoginPageState extends State<LoginPage> {
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       try {
-        UserModel user = await _authService.sigInEmailAndPassword(
-          email: _emailController.text,
-          password: _passwordController.text,
-        );
+        // UserModel user = await _authService.sigInEmailAndPassword(
+        //   email: _emailController.text,
+        //   password: _passwordController.text,
+        // );
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text("Giriş işlemi başarılı"),
+            content: Text("Kayıt işlemi başarılı"),
           ),
         );
+        await context.read<HomeProvider>().fetchItems();
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => LoginPage()),
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Giriş işlemi başarısız: ${e.toString()}"),
+            content: Text("Kayıt işlemi başarısız: ${e.toString()}"),
           ),
         );
       }

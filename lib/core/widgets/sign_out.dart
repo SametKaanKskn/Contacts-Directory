@@ -1,5 +1,6 @@
 import 'package:bitirme/core/service/i_auth_service.dart';
-import 'package:bitirme/view/login_register.dart';
+import 'package:bitirme/view/login_page.dart';
+import 'package:bitirme/view/register_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

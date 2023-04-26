@@ -4,8 +4,10 @@ import 'package:bitirme/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class IAuthService {
-  Future<UserModel> createUserWithEmailAndPassword(
-      {required String email, required String password});
+  Future<UserModel> createUserWithEmailAndPassword({
+    required String email,
+    required String password,
+  });
   //Bu fonksiyonu kullanan sınıf email ve password alıp kullanıcı oluşturulması sağlanacak
   Future<UserModel> sigInEmailAndPassword(
       {required String email, required String password});

@@ -9,8 +9,10 @@ import 'package:bitirme/core/service/mixin_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-class AuthService with ConvertUser implements IAuthService {
+class AuthService implements IAuthService {
   final FirebaseAuth _authInstance = FirebaseAuth.instance;
+
+  static UserModel? currentUser;
   //Buradan firebase e baglanarak kullanıcılarımızı oluşturacagız.
   UserModel _getUser(User? user) {
     return UserModel(userId: user!.uid, userMail: user.email!);
@@ -39,5 +41,11 @@ class AuthService with ConvertUser implements IAuthService {
 
   Future<void> signOut() async {
     await _authInstance.signOut();
+  }
+
+  UserModel convertUser(UserCredential user) {
+    currentUser =
+        UserModel(userId: user.user!.uid, userMail: user.user!.email!);
+    return currentUser!;
   }
 }

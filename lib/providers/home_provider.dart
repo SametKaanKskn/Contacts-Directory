@@ -8,10 +8,6 @@ class HomeProvider with ChangeNotifier {
 
   List<Item> get items => _items;
 
-  HomeProvider() {
-    fetchItems();
-  }
-
   Future<void> fetchItems() async {
     try {
       _items = await _apiService.getItems();

@@ -1,11 +1,12 @@
 // services/api_service.dart
 import 'dart:convert';
 import 'package:bitirme/core/model/item_model.dart';
+import 'package:bitirme/core/service/service.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
   final String _baseUrl =
-      'https://flutter-project-79b9e-default-rtdb.firebaseio.com/';
+      'https://flutter-project-79b9e-default-rtdb.firebaseio.com/${AuthService.currentUser != null ? AuthService.currentUser!.userId : "default"}';
 
   Future<List<Item>> getItems() async {
     final response = await http.get(Uri.parse('$_baseUrl/items.json'));
