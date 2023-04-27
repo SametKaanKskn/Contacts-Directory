@@ -1,5 +1,7 @@
+// home_page.dart
 import 'package:bitirme/core/widgets/sign_out.dart';
-import 'package:bitirme/view/person_details_page.dart';
+import 'package:bitirme/view/person_details.dart';
+import 'package:bitirme/view/person_update_page.dart';
 import 'package:bitirme/view/person_add_page.dart';
 import 'package:bitirme/view/profil_page.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => PersonDetail(person: item),
+                              builder: (context) => PersonUpdate(person: item),
                             ),
                           );
                         },
@@ -110,52 +112,73 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
-                        trailing: IconButton(
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      '${item.name} silinsin mi?',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 16),
-                                    ),
-                                    Row(
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        PersonDetail(person: item),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.visibility,
+                                color: Colors.black54,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        TextButton(
-                                          onPressed: () {
-                                            homeProvider.removeItem(item);
-                                            ScaffoldMessenger.of(context)
-                                                .hideCurrentSnackBar();
-                                          },
-                                          child: Text('EVET',
-                                              style:
-                                                  TextStyle(color: Colors.red)),
+                                        Text(
+                                          '${item.name} silinsin mi?',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16),
                                         ),
-                                        TextButton(
-                                          onPressed: () {
-                                            ScaffoldMessenger.of(context)
-                                                .hideCurrentSnackBar();
-                                          },
-                                          child: Text('HAYIR',
-                                              style: TextStyle(
-                                                  color: Colors.green)),
+                                        Row(
+                                          children: [
+                                            TextButton(
+                                              onPressed: () {
+                                                homeProvider.removeItem(item);
+                                                ScaffoldMessenger.of(context)
+                                                    .hideCurrentSnackBar();
+                                              },
+                                              child: Text('EVET',
+                                                  style: TextStyle(
+                                                      color: Colors.red)),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                ScaffoldMessenger.of(context)
+                                                    .hideCurrentSnackBar();
+                                              },
+                                              child: Text('HAYIR',
+                                                  style: TextStyle(
+                                                      color: Colors.green)),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                                duration: Duration(seconds: 5),
+                                    duration: Duration(seconds: 5),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.delete_outline,
+                                color: Colors.black54,
                               ),
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.delete_outline,
-                            color: Colors.black54,
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

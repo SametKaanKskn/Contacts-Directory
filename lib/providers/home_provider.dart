@@ -37,13 +37,14 @@ class HomeProvider with ChangeNotifier {
     }
   }
 
-  Future<void> updateItem(
-      String itemId, String itemName, String itemPhone) async {
+  Future<void> updateItem(String itemId, String itemName, String itemPhone,
+      String itemDetails) async {
     try {
-      await _apiService.updatePerson(itemId, itemName, itemPhone);
+      await _apiService.updatePerson(itemId, itemName, itemPhone, itemDetails);
       final itemIndex = _items.indexWhere((element) => element.id == itemId);
       if (itemIndex != -1) {
-        _items[itemIndex] = Item(id: itemId, name: itemName, phone: itemPhone);
+        _items[itemIndex] = Item(
+            id: itemId, name: itemName, phone: itemPhone, details: itemDetails);
         notifyListeners();
       }
     } catch (e) {

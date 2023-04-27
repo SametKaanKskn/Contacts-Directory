@@ -3,21 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bitirme/providers/home_provider.dart';
 
-class PersonDetail extends StatelessWidget {
+class PersonUpdate extends StatelessWidget {
   final Item person;
-  PersonDetail({required this.person});
+  PersonUpdate({required this.person});
 
   @override
   Widget build(BuildContext context) {
     var name = TextEditingController();
     var phone = TextEditingController();
+    var details = TextEditingController();
 
     name.text = person.name;
     phone.text = person.phone;
-
-    void _navigateToHomePage(BuildContext context) {
-      Navigator.popAndPushNamed(context, '/home');
-    }
+    details.text = person.details;
 
     return GestureDetector(
       onTap: () {
@@ -27,9 +25,24 @@ class PersonDetail extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.deepPurple,
           title: Text(
-            "Kişi Detay",
+            "Kişi Güncelle Sayfası",
             style: TextStyle(color: Colors.white),
           ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Provider.of<HomeProvider>(context, listen: false).updateItem(
+                  person.id,
+                  name.text,
+                  phone.text,
+                  details.text,
+                );
+                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, '/updateSplash');
+              },
+              icon: Icon(Icons.check, color: Colors.white, size: 30),
+            ),
+          ],
         ),
         body: Center(
           child: SingleChildScrollView(
@@ -69,7 +82,7 @@ class PersonDetail extends StatelessWidget {
                     prefixIcon: Icon(Icons.person, color: Colors.deepPurple),
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 TextField(
                   controller: phone,
                   decoration: InputDecoration(
@@ -85,28 +98,25 @@ class PersonDetail extends StatelessWidget {
                     prefixIcon: Icon(Icons.phone, color: Colors.deepPurple),
                   ),
                 ),
-                SizedBox(height: 5),
-                ElevatedButton(
-                  onPressed: () {
-                    Provider.of<HomeProvider>(context, listen: false)
-                        .updateItem(
-                      person.id,
-                      name.text,
-                      phone.text,
-                    );
-                    Navigator.pop(context);
-                    Navigator.pushReplacementNamed(context, '/updateSplash');
-                  },
-                  child:
-                      Text("Güncelle", style: TextStyle(color: Colors.white)),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.deepPurple,
-                    shape: RoundedRectangleBorder(
+                SizedBox(height: 10),
+                TextField(
+                  controller: details,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 4,
+                  decoration: InputDecoration(
+                    labelText: "Kişi Detayları",
+                    labelStyle: TextStyle(color: Colors.deepPurple),
+                    fillColor: Colors.deepPurple.shade50,
+                    filled: true,
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    hintText: "Kişi Detayları",
+                    prefixIcon: Icon(Icons.notes, color: Colors.deepPurple),
                   ),
                 ),
+                SizedBox(height: 5),
               ],
             ),
           ),

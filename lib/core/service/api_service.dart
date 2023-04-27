@@ -47,17 +47,24 @@ class ApiService {
     }
   }
 
-  Future<void> updatePerson(String ItemId, String name, String phone) async {
-    final response = await http.patch(
-      Uri.parse('$_baseUrl/items/$ItemId.json'),
-      body: jsonEncode({
-        'name': name,
-        'phone': phone,
-      }),
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception('Firebase Veritabanındaki Kişi Güncellenemedi');
+  Future<void> updatePerson(String itemId, String itemName, String itemPhone,
+      String itemDetails) async {
+    final url = '$_baseUrl/items/$itemId.json';
+    try {
+      final response = await http.patch(
+        Uri.parse(url),
+        body: json.encode({
+          'name': itemName,
+          'phone': itemPhone,
+          'details': itemDetails,
+        }),
+      );
+      if (response.statusCode != 200) {
+        throw Exception('Failed to update item.');
+      }
+    } catch (e) {
+      print('Error updating person: $e');
+      throw e;
     }
   }
 }

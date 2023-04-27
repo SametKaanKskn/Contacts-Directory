@@ -15,6 +15,7 @@ class PersonAdd extends StatefulWidget {
 class _PersonAddState extends State<PersonAdd> {
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _userTelController = TextEditingController();
+  final TextEditingController details = TextEditingController();
 
   @override
   void didChangeDependencies() {
@@ -72,13 +73,31 @@ class _PersonAddState extends State<PersonAdd> {
                   ),
                 ),
                 SizedBox(height: 20),
+                TextField(
+                  controller: details,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 4,
+                  decoration: InputDecoration(
+                    labelText: "Kişi Detayları",
+                    labelStyle: TextStyle(color: Colors.deepPurple),
+                    fillColor: Colors.deepPurple.shade50,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintText: "Kişi Detayları",
+                    prefixIcon: Icon(Icons.notes, color: Colors.deepPurple),
+                  ),
+                ),
+                SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () async {
                     final item = Item(
-                      id: '',
-                      name: _userNameController.text,
-                      phone: _userTelController.text,
-                    );
+                        id: '',
+                        name: _userNameController.text,
+                        phone: _userTelController.text,
+                        details: details.text);
                     await Provider.of<HomeProvider>(context, listen: false)
                         .addItem(item);
 
