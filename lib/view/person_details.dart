@@ -42,12 +42,14 @@ class PersonDetail extends StatelessWidget {
                         },
                         icon: Icon(Icons.arrow_back, color: Colors.white),
                       ),
-                      Text(
-                        '${person.name} Detayları',
-                        style: TextStyle(
-                            fontSize: 32,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                      Flexible(
+                        child: Text(
+                          '${person.name} Detayları',
+                          style: TextStyle(
+                              fontSize: 32,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
                       SizedBox(width: 48), // For spacing purposes
                     ],
@@ -108,6 +110,8 @@ class PersonDetail extends StatelessWidget {
                           child: Text(
                             '${person.details}',
                             style: TextStyle(fontSize: 18),
+                            softWrap: true,
+                            overflow: TextOverflow.visible,
                           ),
                         ),
                       ),
