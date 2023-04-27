@@ -1,4 +1,4 @@
-import 'package:bitirme/api/api_service.dart';
+import 'package:bitirme/core/service/api_service.dart';
 import 'package:bitirme/core/model/item_model.dart';
 import 'package:flutter/foundation.dart';
 

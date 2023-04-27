@@ -20,12 +20,14 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _passwordController2 = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
 
   bool isVisibility = false;
 
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
   final FocusNode _password2FocusNode = FocusNode();
+  final FocusNode _nameFocusNode = FocusNode();
   late IAuthService _authService;
   void initState() {
     super.initState();
@@ -63,6 +65,34 @@ class _RegisterPageState extends State<RegisterPage> {
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
+                        TextFormField(
+                          controller: _nameController,
+                          focusNode: _nameFocusNode,
+                          decoration: InputDecoration(
+                            hintText: "Adınızı ve Soyadınızı giriniz",
+                            border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            prefixIcon:
+                                const Icon(Icons.person, color: myPrimaryColor),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: const BorderSide(
+                                color: myPrimaryColor,
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                          textInputAction: TextInputAction.next,
+                          onEditingComplete: () {
+                            FocusScope.of(context)
+                                .requestFocus(_emailFocusNode);
+                          },
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
                         TextFormField(
                           validator: (value) {
                             final bool emailValid = RegExp(
@@ -200,7 +230,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           onPressed: () async {
                             await _authService.createUserWithEmailAndPassword(
                                 email: _emailController.text,
-                                password: _passwordController.text);
+                                password: _passwordController.text,
+                                name: _nameController.text);
                             _submitForm();
                           },
                           child: const Text("Kayıt Ol"),
@@ -223,10 +254,11 @@ class _RegisterPageState extends State<RegisterPage> {
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       try {
-        // UserModel user = await _authService.sigInEmailAndPassword(
-        //   email: _emailController.text,
-        //   password: _passwordController.text,
-        // );
+        await _authService.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+          name: _nameController.text, // Add this line
+        );
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text("Kayıt işlemi başarılı"),
@@ -252,9 +284,11 @@ class _RegisterPageState extends State<RegisterPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _passwordController2.dispose();
+    _nameController.dispose(); // Add this line
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
     _password2FocusNode.dispose();
+    _nameFocusNode.dispose(); // Add this line
     super.dispose();
   }
 }

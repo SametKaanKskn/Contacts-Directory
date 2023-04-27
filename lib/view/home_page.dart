@@ -1,6 +1,7 @@
 import 'package:bitirme/core/widgets/sign_out.dart';
 import 'package:bitirme/view/person_details_page.dart';
 import 'package:bitirme/view/person_add_page.dart';
+import 'package:bitirme/view/profil_page.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -165,15 +166,34 @@ class _HomePageState extends State<HomePage> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => PersonAdd()),
-        ),
-        backgroundColor: Colors.deepPurple,
-        icon: Lottie.asset('assets/person_add_animation.json',
-            width: 40, height: 40),
-        label: Text('Kişi Ekle'),
+      floatingActionButton: Stack(
+        children: [
+          Align(
+            alignment: Alignment.bottomRight,
+            child: FloatingActionButton.extended(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PersonAdd()),
+              ),
+              backgroundColor: Colors.deepPurple,
+              icon: Lottie.asset('assets/person_add_animation.json',
+                  width: 40, height: 40),
+              label: Text('Kişi Ekle'),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: FloatingActionButton.extended(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage()),
+              ),
+              backgroundColor: Colors.deepPurple,
+              icon: Icon(Icons.account_circle, size: 35),
+              label: Text('Profil'),
+            ),
+          ),
+        ],
       ),
     );
   }
