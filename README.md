@@ -1,9 +1,12 @@
-Giriş
-Bu kavramsal doküman, "Kişi Rehberi" adlı Flutter tabanlı mobil uygulamanın işlevselliğini, amaçlarını ve hedef kitlesini anlatmaktadır. Uygulama, kullanıcıların kişisel bilgilerini ve detaylarını saklayarak, bu bilgilere kolay ve hızlı erişim sağlamayı amaçlamaktadır.
+
+Bu doküman, "Kişi Rehberi" adlı Flutter tabanlı mobil uygulamanın işlevselliğini, amaçlarını ve hedef kitlesini anlatmaktadır. Uygulama, kullanıcıların kişisel bilgilerini ve detaylarını saklayarak, bu bilgilere kolay ve hızlı erişim sağlamayı amaçlamaktadır.
+
 Amaç
 "Kişi Rehberi" uygulamasının temel amacı, kullanıcıların kişisel bilgilerini ve detaylarını düzenli bir şekilde saklamalarına yardımcı olmaktır. Bu sayede, kullanıcılar bu bilgilere herhangi bir zamanda ve mekanda kolayca ulaşabilirler.
+
 Hedef Kitle
 Uygulamanın hedef kitlesi, kişisel bilgilerini ve detaylarını saklamak ve bu bilgilere kolay erişim sağlamak isteyen tüm bireylerdir. Uygulama, iş veya özel yaşamında düzenli bir şekilde kişisel bilgilere ihtiyaç duyan herkes için uygundur.
+
 Özellikler
 1.	Kullanıcı hesabı oluşturma ve oturum açma: Kullanıcılar, uygulamaya kaydolabilir ve oturum açarak kişisel bilgilerini güvence altına alabilirler.
 2.	Kişi ekleme: Kullanıcılar, yeni kişiler ekleyerek ad, telefon numarası ve detaylar gibi bilgileri kaydedebilirler.
